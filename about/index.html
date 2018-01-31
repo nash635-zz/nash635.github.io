@@ -79,14 +79,21 @@
 
 
 
+<meta name="description" content="ValidationService@WASP MotivationWe have several different requirements for validation and scroing, with a standard service, we can have users focus with their business logic and handel below items fo">
 <meta property="og:type" content="website">
 <meta property="og:title" content="about">
 <meta property="og:url" content="http://nash635.github.io/about/index.html">
 <meta property="og:site_name" content="Ericcc&#39;s blog">
+<meta property="og:description" content="ValidationService@WASP MotivationWe have several different requirements for validation and scroing, with a standard service, we can have users focus with their business logic and handel below items fo">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-01-31T08:13:32.763Z">
+<meta property="og:image" content="https://image.ibb.co/nsfoHR/QQ_20141130215409.jpg">
+<meta property="og:image" content="https://image.ibb.co/incrNR/chart.png">
+<meta property="og:image" content="https://image.ibb.co/cy2AUG/Capture.png">
+<meta property="og:updated_time" content="2018-01-31T08:27:57.941Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="about">
+<meta name="twitter:description" content="ValidationService@WASP MotivationWe have several different requirements for validation and scroing, with a standard service, we can have users focus with their business logic and handel below items fo">
+<meta name="twitter:image" content="https://image.ibb.co/nsfoHR/QQ_20141130215409.jpg">
 
 
 
@@ -308,7 +315,37 @@
       <div class="post-body">
         
         
-          
+          <h1 id="ValidationService-WASP"><a href="#ValidationService-WASP" class="headerlink" title="ValidationService@WASP"></a>ValidationService@WASP</h1><p><a href="http://lsstc313/" target="_blank" rel="noopener"><img src="https://image.ibb.co/nsfoHR/QQ_20141130215409.jpg" alt="N|Solid"></a></p>
+<h1 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h1><p>We have several different requirements for validation and scroing, with a standard service, we can have users focus with their business logic and handel below items for them.</p>
+<ul>
+<li>One optimization, opt-in everywhere.</li>
+<li>Reduce manual work.</li>
+<li>Store validation results in DB and easy to check the history.</li>
+</ul>
+<h1 id="High-level-architecture"><a href="#High-level-architecture" class="headerlink" title="High level architecture"></a>High level architecture</h1><p><a href="https://image.ibb.co/incrNR/chart.png" target="_blank" rel="noopener"><img src="https://image.ibb.co/incrNR/chart.png" alt="N|Solid"></a></p>
+<h1 id="How-to-opt-in"><a href="#How-to-opt-in" class="headerlink" title="How to opt in"></a>How to opt in</h1><h3 id="1-Service-interface-is-provided-as-a-aether-module"><a href="#1-Service-interface-is-provided-as-a-aether-module" class="headerlink" title="1. Service interface is provided as a aether module."></a>1. Service interface is provided as a aether module.</h3><ul>
+<li>Current Aether module: [guid:0605bcaa-a63a-4020-a7ae-5ec417e1d4aa].</li>
+<li>Input: A json config file.</li>
+<li>Output:<br>[1][cosmospath:for scoring result]<br>[2][cosmospath: for metrics info]</li>
+</ul>
+<h3 id="2-All-parameter-is-descriped-as-a-json-file"><a href="#2-All-parameter-is-descriped-as-a-json-file" class="headerlink" title="2. All parameter is descriped as a json file."></a>2. All parameter is descriped as a json file.</h3><ul>
+<li><a href="http://jsoneditoronline.org/?id=f0474634210c5013a25b55861447c13e" target="_blank" rel="noopener">SampleConfig</a> - A sample user end config which validation service needs.</li>
+<li>To make it more easier for user to use, we provided a module(id:a8435f5b-e898-4e48-b9a2-572830a2b299) to for user to modify the major parameters from module input.<br><a href="aether://experiments/4581bdc1-3334-45b0-8fc6-beb5895be74d" target="_blank" rel="noopener"><img src="https://image.ibb.co/cy2AUG/Capture.png" alt="N|Solid"></a></li>
+<li><p>Description for each input:</p>
+<p>| No. | Parameter | Explaination | IsRequired |<br>| —— | —— | —— | —— |<br>| 1 | FeatureExtractionConfig | Feature extraction configuration. Set it only when the input data is raw data, and needs to do feature extraction with in trainer. | YES |<br>| 2 | ValidationDataDir | The data path used to validate target model. Note: the data is required to be binary format for performance, please refer to below sample graph for how to convert from text format. | YES |<br>| 3 | PredictionNamePattern | As trainer needs to support validation with multiple data set, so the validation output may contain multiple result folder subfolder, this pattern needs to be provided to aggregate all result as a data set. | YES |<br>| 4 | InitialModelDir | Model path which needs for validation. Note: the model needs to be binary format. | YES |<br>| 5 | ValidationOutputDir | The root path for trainer to output the validation results. | YES |<br>| 6 | TrainerParamStr | Optional, if user want to modify trainer parameter, just provided a full set parameter string to this input. | NO |<br>| 7 | WorkerCount | Machines count needs for this validation. | YES |<br>| 8 | YarnQueue | Our job needs to be submitted to YARN for running, sometimes user needs to modify this to avoid busy queue. | YES |<br>| 9 | UserSpecifiedSplitPhrase | Optional, our trainer currently support user to store some additional column into one place holder column, user can store anything to it, such as some column to calculate metrics per slice, user can split those columns by a known seperater, and user can provide this input to expand these info into real columns before calculate slices, by default, we will ignore this info and treat all column as m_DisplayLocation=ml-1. | NO |<br>| 10 | CustomizedSlices | Optional, associate with input9, user can provide all the slices combination they want. | NO |</p>
+</li>
+<li><p>The input of validation data needs to be binary.<br> User can refer to below sample graph for how to convert text data to binary format.</p>
+</li>
+</ul>
+<h3 id="3-Sample"><a href="#3-Sample" class="headerlink" title="3. Sample"></a>3. Sample</h3><ul>
+<li><a href="aether://experiments/4581bdc1-3334-45b0-8fc6-beb5895be74d" target="_blank" rel="noopener">sample</a> - A sample graph for validation after training.</li>
+</ul>
+<h1 id="F-A-Qs"><a href="#F-A-Qs" class="headerlink" title="F.A.Qs"></a>F.A.Qs</h1><h5 id="1-How-can-I-monitor-the-backend-experiment-status"><a href="#1-How-can-I-monitor-the-backend-experiment-status" class="headerlink" title="1. How can I monitor the backend experiment status?"></a>1. How can I monitor the backend experiment status?</h5><p>[Wasp]: Check the jobid from stdout of service module, and go to <a href="http://lsstc313" target="_blank" rel="noopener">Web Portal</a> to see the record.</p>
+<h5 id="2-Is-the-metrics-long-term-saved"><a href="#2-Is-the-metrics-long-term-saved" class="headerlink" title="2. Is the metrics long term saved?"></a>2. Is the metrics long term saved?</h5><p>[Wasp]: Yes, we save them to database and will never be expired, you can retrive it with your jobid with the link provided by web dashboard. The result can be retrived with the JobId like this <a href="http://waspodataapi.azurewebsites.net/MetricsInfo?$filter=JobId%20eq%20389" target="_blank" rel="noopener">link</a>.</p>
+<h5 id="3-What-will-be-supportted-next"><a href="#3-What-will-be-supportted-next" class="headerlink" title="3. What will be supportted next?"></a>3. What will be supportted next?</h5><p>[Wasp]: Structured input for validation service and trainer, user can define a pipeline for each step(training,validation…) through json format input.</p>
+<h5 id="4-Is-there-a-limitation-for-the-total-slice-combination-count"><a href="#4-Is-there-a-limitation-for-the-total-slice-combination-count" class="headerlink" title="4. Is there a limitation for the total slice combination count?"></a>4. Is there a limitation for the total slice combination count?</h5><p>[Wasp]: Yes, we control it not larger than 1000, as if a user set some kind of id column as slice by mistake, our DB will be inserted a unexpected large number of records.</p>
+<h5 id="5-Why-User-need-to-provid-the-input-in-binary-format-and-how-to-debug"><a href="#5-Why-User-need-to-provid-the-input-in-binary-format-and-how-to-debug" class="headerlink" title="5. Why User need to provid the input in binary format, and how to debug?"></a>5. Why User need to provid the input in binary format, and how to debug?</h5><p>[Wasp]: Binary data is more efficient. It works well in normal case. For debugging, we have tool to convert it into text, like the feature vector, and model format, please contact @fesun/@xianzh for latest version and how to use it.</p>
+
         
       </div>
       
@@ -350,8 +387,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -393,6 +439,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#ValidationService-WASP"><span class="nav-number">1.</span> <span class="nav-text">ValidationService@WASP</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Motivation"><span class="nav-number">2.</span> <span class="nav-text">Motivation</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#High-level-architecture"><span class="nav-number">3.</span> <span class="nav-text">High level architecture</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#How-to-opt-in"><span class="nav-number">4.</span> <span class="nav-text">How to opt in</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Service-interface-is-provided-as-a-aether-module"><span class="nav-number">4.0.1.</span> <span class="nav-text">1. Service interface is provided as a aether module.</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-All-parameter-is-descriped-as-a-json-file"><span class="nav-number">4.0.2.</span> <span class="nav-text">2. All parameter is descriped as a json file.</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-Sample"><span class="nav-number">4.0.3.</span> <span class="nav-text">3. Sample</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#F-A-Qs"><span class="nav-number">5.</span> <span class="nav-text">F.A.Qs</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-How-can-I-monitor-the-backend-experiment-status"><span class="nav-number">5.0.0.0.1.</span> <span class="nav-text">1. How can I monitor the backend experiment status?</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-Is-the-metrics-long-term-saved"><span class="nav-number">5.0.0.0.2.</span> <span class="nav-text">2. Is the metrics long term saved?</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-What-will-be-supportted-next"><span class="nav-number">5.0.0.0.3.</span> <span class="nav-text">3. What will be supportted next?</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-Is-there-a-limitation-for-the-total-slice-combination-count"><span class="nav-number">5.0.0.0.4.</span> <span class="nav-text">4. Is there a limitation for the total slice combination count?</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5-Why-User-need-to-provid-the-input-in-binary-format-and-how-to-debug"><span class="nav-number">5.0.0.0.5.</span> <span class="nav-text">5. Why User need to provid the input in binary format, and how to debug?</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
